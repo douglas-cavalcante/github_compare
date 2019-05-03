@@ -14,16 +14,6 @@
       }
     ],
     "import/prefer-default-export": "off",
-    "react/jsx-one-expression-per-line": "off",
-    "prefer-destructuring": [
-      "error",
-      {
-        "array": false,
-        "object": false
-      },
-      {
-        "enforceForRenamedProperties": false
-      }
-    ]
+    "react/jsx-one-expression-per-line": "off"
   }
 }

@@ -19,10 +19,10 @@ export default class Main extends React.Component {
     e.preventDefault();
     try {
       const response = await api.get(`repos/${repositoryInput}`);
-      this.setState({
+      this.setState(prevState => ({
         repositoryInput: '',
-        repositories: [...this.state.repositories, response.data],
-      });
+        repositories: [...prevState.repositories, response.data],
+      }));
     } catch (error) {
       console.log(error);
     }
