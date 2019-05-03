@@ -7,6 +7,7 @@ import api from '../../services/api';
 
 export default class Main extends React.Component {
   state = {
+    loading: false,
     repositoryInput: '',
     repositories: [],
     repositoryError: false,
@@ -17,13 +18,13 @@ export default class Main extends React.Component {
   };
 
   handleAddRepository = async (e) => {
-    const { repositoryInput } = this.state;
     e.preventDefault();
+    const { repositoryInput } = this.state;
+
+    this.setState({ loading: true });
     try {
       const { data: repository } = await api.get(`repos/${repositoryInput}`);
-
       repository.lastCommit = moment(repository.pushed_at).fromNow();
-
       this.setState(prevState => ({
         repositoryInput: '',
         repositories: [...prevState.repositories, repository],
@@ -31,11 +32,15 @@ export default class Main extends React.Component {
       }));
     } catch (error) {
       this.setState({ repositoryError: true });
+    } finally {
+      this.setState({ loading: false });
     }
   };
 
   render() {
-    const { repositoryInput, repositoryError, repositories } = this.state;
+    const {
+      repositoryInput, repositoryError, repositories, loading,
+    } = this.state;
     return (
       <Container>
         <img src={Logo} alt="Git Compare" />
@@ -46,7 +51,7 @@ export default class Main extends React.Component {
             onChange={this.handleChange}
             placeholder="usuário/repositório"
           />
-          <button type="submit">Ok</button>
+          <button type="submit">{loading ? <i className="fa fa-spinner fa-pulse" /> : 'Ok'}</button>
         </Form>
         <CompareList repositories={repositories} />
       </Container>
