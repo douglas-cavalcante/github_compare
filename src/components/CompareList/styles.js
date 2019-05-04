@@ -56,3 +56,19 @@ export const Repository = styled.div`
     }
   }
 `;
+
+export const Footer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 30px;
+
+  button {
+    padding: 10px;
+    width: 60px;
+
+    &:hover {
+      background: #ccc;
+    }
+  }
+`;
