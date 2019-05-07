@@ -55,20 +55,67 @@ export const Repository = styled.div`
       }
     }
   }
-`;
 
-export const Footer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  padding: 30px;
+  div.buttons-container {
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-around;
+    button {
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: bold;
+      i {
+        margin-right: 3px;
+      }
+      &:nth-child(2n) {
+        border: 1px solid #c11927;
+        color: #c11927;
+        &:hover {
+          background: #aa1622;
+          color: #fff;
+        }
+      }
+      &:nth-child(2n - 1) {
+        border: 1px solid #116088;
+        color: #116088;
+        &:hover {
+          background: #0e5071;
+          color: #fff;
+        }
+      }
+    }
+  }
 
-  button {
-    padding: 10px;
-    width: 60px;
+  div.buttons-container {
+    background-color: #f5f5f5;
+    padding: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 
-    &:hover {
-      background: #ccc;
+    button {
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: bold;
+
+      &:nth-child(2n) {
+        border: 1px solid #c11927;
+        color: #c11927;
+        &:hover {
+          background: #aa1622;
+          color: #fff;
+        }
+      }
+      &:nth-child(2n - 1) {
+        border: 1px solid #116088;
+        color: #116088;
+        &:hover {
+          background: #0e5071;
+          color: #fff;
+        }
+      }
     }
   }
 `;

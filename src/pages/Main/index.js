@@ -1,9 +1,14 @@
 import React from 'react';
 import moment from 'moment';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import Logo from '../../assets/logo.png';
 import { Form, Container } from './styles';
-import CompareList from '../../components/CompareList';
+
 import api from '../../services/api';
+import CompareList from '../../components/CompareList';
 
 export default class Main extends React.Component {
   state = {
@@ -19,21 +24,18 @@ export default class Main extends React.Component {
     this.setState({ loading: false, repositories });
   }
 
-  handleChange = (e) => {
-    this.setState({ repositoryInput: e.target.value });
-  };
+  notify = text => toast(text);
 
   getLocalRepositories = async () => JSON.parse(await localStorage.getItem('@local_repositories')) || [];
 
-  setLocalRepositories = () => {
+  setLocalRepositories = async () => {
     const { repositories } = this.state;
-    localStorage.setItem('@local_repositories', JSON.stringify(repositories));
+    await localStorage.setItem('@local_repositories', JSON.stringify(repositories));
   };
 
   handleAddRepository = async (e) => {
     e.preventDefault();
     this.setState({ loading: true });
-
     const { repositoryInput } = this.state;
 
     try {
@@ -55,7 +57,11 @@ export default class Main extends React.Component {
     }
   };
 
-  handleEditRepositoy = async (id) => {
+  handleChange = (e) => {
+    this.setState({ repositoryInput: e.target.value });
+  };
+
+  handleUpdateRepository = async (id) => {
     const { repositories } = this.state;
     const repositorySelected = repositories.find(repository => repository.id === id);
     try {
@@ -64,12 +70,13 @@ export default class Main extends React.Component {
       this.setState(
         prevState => ({
           ...prevState,
+          repositoryError: false,
           repositories: prevState.repositories.map(repository => (repository.id === data.id ? data : repository)),
         }),
-        this.setLocalRepositories,
+        await this.setLocalRepositories,
       );
     } catch (error) {
-      console.log(error);
+      this.setState({ repositoryError: true });
     }
   };
 
@@ -81,8 +88,9 @@ export default class Main extends React.Component {
         ...prevState,
         repositories: newRepositories,
       }),
-      this.setLocalRepositories,
+      await this.setLocalRepositories,
     );
+    this.notify('Deletado com sucesso');
   };
 
   render() {
@@ -92,6 +100,7 @@ export default class Main extends React.Component {
 
     return (
       <Container>
+        <ToastContainer />
         <img src={Logo} alt="Git Compare" />
         <Form withError={repositoryError} onSubmit={this.handleAddRepository}>
           <input
@@ -104,7 +113,7 @@ export default class Main extends React.Component {
         </Form>
         <CompareList
           repositories={repositories}
-          editRepository={this.handleEditRepositoy}
+          updateRepository={this.handleUpdateRepository}
           deleteRepository={this.handleDeleteRepository}
         />
       </Container>
