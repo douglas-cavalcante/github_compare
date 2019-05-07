@@ -40,16 +40,20 @@ export default class Main extends React.Component {
 
     try {
       const { data: repository } = await api.get(`repos/${repositoryInput}`);
-
-      repository.lastCommit = moment(repository.pushed_at).fromNow();
-      this.setState(
-        prevState => ({
-          repositoryInput: '',
-          repositories: [...prevState.repositories, repository],
-          repositoryError: false,
-        }),
-        this.setLocalRepositories,
-      );
+      const repositories = await this.getLocalRepositories();
+      if (!repositories.find(data => data.id === repository.id)) {
+        repository.lastCommit = moment(repository.pushed_at).fromNow();
+        this.setState(
+          prevState => ({
+            repositoryInput: '',
+            repositories: [...prevState.repositories, repository],
+            repositoryError: false,
+          }),
+          this.setLocalRepositories,
+        );
+      } else {
+        this.notify('Esse repositório já existe');
+      }
     } catch (error) {
       this.setState({ repositoryError: true });
     } finally {
