@@ -94,7 +94,7 @@ export default class Main extends React.Component {
       }),
       await this.setLocalRepositories,
     );
-    this.notify('Deletado com sucesso');
+    this.notify('Deletado com sucesso !!!');
   };
 
   render() {
